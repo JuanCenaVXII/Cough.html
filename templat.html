@@ -229,7 +229,8 @@
 
     </div>
     <div class="button8" onmouseenter="this.style='border: 3px solid #0088aa;';" onmouseleave="this.style='border: 3px solid #000000;';">
-        <button>
+        <button onclick="getRandomNumber()">
+                      random number 
         </button>
 
     </div>
@@ -268,12 +269,10 @@
         let c = 0;
 
         function DisplayNumber(letter) {
-            unction getRandomNumber(min, max) {
+            function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Example usage
-console.log(getRandomNumber(1, 10)); // prints a random integer between 1 and 10 (inclusive)
             let display = document.getElementById("informationDisplay");
             let amount = 0;
             if (letter == 'a') {
