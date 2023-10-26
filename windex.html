@@ -5,7 +5,7 @@
     var numberofguesses=0;
     var thereyougo=e;
     function guessnumber() {
-     numberofguesses = document.getElementByID(whataboutit),value
+     numberofguesses = document.getElementByID(whataboutit).value
       
     }
   </script>
@@ -13,7 +13,7 @@
 <body>
   <h2>whats the number?</h2>
   <br><input id="guess pls">
-  <button>
+  <button onclick="guessnumber();">
     OK 
   </button>
   <p id="whataboutit">how much you guessed <input></p> 
