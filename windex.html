@@ -1,29 +1,219 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <script> 
-    var nice=69;
-    var numberofguesses=0;
-    var thereyougo=e;
-    function guessnumber() {
-     numberofguesses = document.getElementByID(whataboutit).value
-      
-    }
-  </script>
+    <meta charset="utf-8" />
+    <title>Guess My Number</title>
+    <style>
+        .bg-body{
+            background-color: peachpuff;
+        }
+
+        .title-h1{
+            text-align:center;
+            color: rgb(81, 52, 27);
+        }
+
+        .information-div{
+            background-color: rgb(235, 198, 165);
+            margin: auto;
+            margin-top: 60px;
+            width: 400px;
+            height: 300px;
+            border-radius: 20px;
+            text-align:center;
+        }
+
+        .guess-input{
+            background-color: peachpuff;
+            width: 100px;
+            height: 40px;
+            font-size: 20px;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .guess-div{
+            margin: auto;
+            padding-top: 40px;
+            width: 300px;
+            height: 60px;
+            text-align: center;
+        }
+
+        .guess-button{
+            background-color: peachpuff;
+            border: none;
+            border-radius: 5px;
+            width: 100px;
+            height: 20px;
+            margin-left: 20px;
+        }
+
+        .guess-button:hover{
+            background-color: rgb(225, 185, 149);
+        }
+
+        .stats-div{
+            margin: auto;
+            width: 300px;
+            height: 80px;
+            padding-top:10px;
+            text-align: center;
+        }
+
+        .stat-h2{
+            color: rgb(81, 52, 27);
+        }
+
+        .restart-button{
+            background-color: peachpuff;
+            border: none;
+            border-radius: 5px;
+            width: 200px;
+            height: 40px;
+            margin-left: 20px;
+        }
+
+        .restart-button:hover{
+            background-color: rgb(225, 185, 149);
+        }
+    </style>
+    <script>
+        let numberToGuess = getRandomNumber(1, 101);
+        let guessedNumbers = [];
+        let guesses = 0;
+        let lastGuess = 0;
+
+        let informationDiv;
+        let guessDiv;
+
+        function getRandomNumber(min, max){
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        function Guess(){
+            let guessInput = document.getElementById("guess-input");
+            let guess = guessInput.value;
+            let titleHeader = document.getElementById("title-h1");
+            guessDiv = document.getElementById("guess-div");
+            informationDiv = document.getElementById("information-div");
+            guessInput.value = "";
+            guessInput.focus();
+            if (guess.length == 0){
+                titleHeader.textContent = "Guess a number";
+                return;
+            }
+            if (guessedNumbers.includes(guess)){
+                titleHeader.textContent = "You already guessed that number";
+                return;
+            }
+            else if (guess > numberToGuess){
+                titleHeader.textContent = GetLowerGuessText();
+            }
+            else if (guess < numberToGuess){
+                titleHeader.textContent = GetHigherGuessText();
+            }
+            else{
+                GuessedTheNumber();
+            }
+            guessedNumbers.push(guess);
+            guesses++;
+            lastGuess = guess;
+            UpdateStats();
+        }
+
+        function GetHigherGuessText(){
+            let messages = [
+            "Your guess is too low. Try again!",
+            "Sorry, your guess is too low.",
+            "Nope, your guess is too low.",
+            "Your guess is lower than the number. Try again!",
+            "Your guess is not high enough. Try again!",
+            "Your guess is lower than the actual number. Try again!",
+            "Your guess is too low. Please try again.",
+            "That's not it! Your guess is too low.",
+            "Your guess is lower than the target number. Please try again.",
+            "Your guess is too low. Keep trying!",
+            ];
+
+            return messages[getRandomNumber(0, messages.length)];
+        }
+
+        function GetLowerGuessText(){
+            let messages = [
+            "Your guess is too high. Try again!",
+            "Sorry, your guess is too high.",
+            "Nope, your guess is too high.",
+            "Your guess is higher than the number. Try again!",
+            "Your guess is too high. Please try again.",
+            "That's not it! Your guess is too high.",
+            "Your guess is higher than the target number. Please try again.",
+            "Your guess is too high. Keep trying!",
+            "Your guess is higher than the actual number. Try again!",
+            "Your guess is not low enough. Try again!",
+            ];
+            return messages[getRandomNumber(0, messages.length)];
+        }
+        
+        function GuessedTheNumber(){
+            let messages = [
+            "Congratulations! You guessed it, the number was {number}!",
+            "Great job! You got it, the number was {number}!",
+            "You got it! Congratulations, the number was {number}!",
+            "Awesome! You guessed it, the number was {number}!",
+            "You did it! Great job, the number was {number}!",
+            "Well done! You got it, the number was {number}!",
+            "You're a winner! Congratulations, the number was {number}!",
+            "Hooray! You guessed it, the number was {number}!",
+            "Fantastic! You got it, the number was {number}!",
+            "You're correct! Congratulations, the number was {number}!",
+            ];
+            
+            let guessInput = document.getElementById("guess-input");
+            let titleHeader = document.getElementById("title-h1");
+            let statsDiv = document.getElementById("stats-div");
+            
+            let message = messages[getRandomNumber(0, messages.length)];
+            titleHeader.textContent = message.replace("{number}", numberToGuess);
+            informationDiv.removeChild(guessDiv)
+        }
+
+        function UpdateStats(){
+            let guessesHeader = document.getElementById("guesses-h2");
+            let lastGuessHeader = document.getElementById("lastguess-h2");
+            guessesHeader.textContent = "Guesses: " + guesses;
+            lastGuessHeader.textContent = "Last Guess: " + lastGuess;
+        }
+
+        function Setup(){
+            let titleHeader = document.getElementById("title-h1");
+            let statsDiv = document.getElementById("stats-div");
+            guesses = 0;
+            numberToGuess = getRandomNumber(1, 101);
+            guessedNumbers = [];
+            titleHeader.textContent = "I'm thinking of a number from 1 to 100";
+            informationDiv.insertBefore(guessDiv, statsDiv);
+            let guessInput = document.getElementById("guess-input");
+            guessInput.value = 0;
+            UpdateStats();
+        }
+
+    </script>
 </head>
-<body>
-  <h2>whats the number?</h2>
-  <br><input id="guess pls">
-  <button onclick="guessnumber();">
-    OK 
-  </button>
-  <p id="whataboutit">how much you guessed <input></p> 
-  
+<body class="bg-body">
+    <h1 class="title-h1" id="title-h1">I'm thinking of a number from 1 to 100</h1>
+    <div class="information-div" id="information-div">
+        <div class="guess-div" id="guess-div">
+            <input class="guess-input" id="guess-input" type="number"/>
+            <button class="guess-button" onclick="Guess()">Guess</button>
+        </div>
+        <div class="stats-div" id="stats-div">
+            <h2 class="stat-h2" id="guesses-h2">Guesses: 0</h2>
+            <h2 class="stat-h2" id="lastguess-h2">Last Guess: 0</h2>
+            <button class="restart-button" id="restart-button" onclick="Setup()">Restart</button>
+        </div>
+    </div>
 </body>
-
-
-
-
-
-
-  
 </html>
